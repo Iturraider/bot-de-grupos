@@ -3,6 +3,7 @@ from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes, Messa
 import random
 
 
+
 TOKEN = "7442684904:AAF0JtIzYB4zoff6B-STm9ndvUGmkvq3OPM"
 
 OBTENER_GRUPOS, PRUEBA_OTRA_VEZ = range(2)
@@ -115,7 +116,8 @@ grupos_conversation_handler = ConversationHandler(
 
 application.add_handler(grupos_conversation_handler)
 
-application.run_polling(allowed_updates=Update.ALL_TYPES)
+application.run_polling(allowed_updates=Update.ALL_TYPES, host="0.0.0.0", port=10000)
+# application.run(host="0.0.0.0", port=10000)
 
 
 
