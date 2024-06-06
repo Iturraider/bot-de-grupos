@@ -117,7 +117,6 @@ grupos_conversation_handler = ConversationHandler(
 application.add_handler(grupos_conversation_handler)
 
 application.run_polling(allowed_updates=Update.ALL_TYPES)
-application.run(host="0.0.0.0", port=10000)
 
 
 
