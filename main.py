@@ -9,8 +9,6 @@ TOKEN = "7442684904:AAF0JtIzYB4zoff6B-STm9ndvUGmkvq3OPM"
 OBTENER_GRUPOS, PRUEBA_OTRA_VEZ = range(2)
 
 
-async def say_bay(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Adiós")
 
 
 def crear_grupos(numero_grupos, lista_nombres):
@@ -66,6 +64,8 @@ async def boton_callback(update: Update, context: CallbackContext):
     await update.callback_query.message.reply_text(message)
     # await update.callback_query.message.reply_text(numero)
 
+async def say_by(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("Adiós")
 
 async def cancel_conversation(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Has dejado la conversación")
