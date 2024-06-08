@@ -1,4 +1,4 @@
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton, ReplyKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes, MessageHandler, ConversationHandler, filters, CallbackContext, CallbackQueryHandler
 import random
 
@@ -7,6 +7,10 @@ import random
 TOKEN = "7442684904:AAF0JtIzYB4zoff6B-STm9ndvUGmkvq3OPM"
 
 OBTENER_GRUPOS, PRUEBA_OTRA_VEZ = range(2)
+
+
+async def say_bay(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("Adiós")
 
 
 def crear_grupos(numero_grupos, lista_nombres):
@@ -99,6 +103,7 @@ async def obtener_grupos(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 application = ApplicationBuilder().token(TOKEN).build()
 application.add_handler( CommandHandler( "start", say_hello) )
+application.add_handler( CommandHandler( "ciao", say_by) )
 application.add_handler( CallbackQueryHandler(boton_callback) )
 
 
