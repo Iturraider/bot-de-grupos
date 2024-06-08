@@ -62,7 +62,8 @@ async def boton_callback(update: Update, context: CallbackContext):
     grupos = crear_grupos(int(numero), diccionario)
 
     for i, grupo in enumerate(grupos):
-        message += f"Grupo {i+1}: {grupo} \n"
+        message += f"Grupo {i+1}: "
+        message += ", ".join(grupo) + "\n"
     await update.callback_query.message.reply_text(message)
 
 
@@ -97,7 +98,8 @@ async def obtener_grupos(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 grupos_creados = crear_grupos(numero, diccionario)
                 
                 for i, grupo in enumerate(grupos_creados):
-                    message += f"Grupo {i+1}: {grupo} \n"
+                    message += f"Grupo {i+1}: "
+                    message += ", ".join(grupo) + "\n"
                 await update.message.reply_text(message)
         except ValueError:
             await update.message.reply_text("Por favor, ingresa un número válido.")
