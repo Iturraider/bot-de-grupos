@@ -8,34 +8,35 @@ TOKEN = "7442684904:AAF0JtIzYB4zoff6B-STm9ndvUGmkvq3OPM"
 
 OBTENER_GRUPOS, PRUEBA_OTRA_VEZ = range(2)
 
+def crear_grupos(numero_grupos, diccionario_nombres):
+    """
+    Función que crea grupos a partir de un diccionario de nombres.
+    Intenta que la suma de los valores de cada grupo sea lo más igual posible.
+    Args:
+        numero_grupos: El número de grupos a crear.
+        diccionario_nombres: Un diccionario con nombres como claves y 1 o 2 como valores.
+    Returns:
+        Una lista de listas, donde cada sublista representa un grupo.
+    """
+    nombres = list(diccionario_nombres.keys())
+    valores = list(diccionario_nombres.values())
 
+    # Mezclamos los nombres aleatoriamente
+    combinados = list(zip(nombres, valores))
+    random.shuffle(combinados)
+    nombres[:], valores[:] = zip(*combinados)
 
+    grupos = [[] for _ in range(numero_grupos)]
+    sumas_grupos = [0] * numero_grupos
 
-def crear_grupos(numero_grupos, lista_nombres):
-        """
-        Función que crea grupos a partir de una lista de nombres.
-        Args:
-            numero_grupos: El número de grupos a crear.
-            lista_nombres: Una lista de nombres.
-        Returns:
-            Una lista de listas, donde cada sublista representa un grupo.
-        """
-        random.shuffle(lista_nombres)  # Mezclamos los nombres aleatoriamente
-        grupos = []
-        for i in range(numero_grupos):
-            grupos.append([])
-        # Distribuimos los nombres en los grupos
-        for i, nombre in enumerate(lista_nombres):
-            grupo_index = i % numero_grupos
-            grupos[grupo_index].append(nombre)
-        return grupos
+    # Asignamos nombres a los grupos intentando equilibrar las sumas
+    for nombre, valor in zip(nombres, valores):
+        # Encontramos el grupo con la suma más baja
+        indice_grupo = sumas_grupos.index(min(sumas_grupos))
+        grupos[indice_grupo].append(nombre)
+        sumas_grupos[indice_grupo] += valor
 
-
-
-
-
-
-
+    return grupos
 
 async def say_hello(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
@@ -52,17 +53,20 @@ async def boton_callback(update: Update, context: CallbackContext):
     await update.callback_query.answer()
     numero = update.callback_query.data
     message = ""
-    lista = ["Jose y Laura", "Andrés y Salut", "Javi y Salut", "Luján y Sergio"," Enan y Pilar", "David y Sandra", "Marcos y Maria", "Ana María y Salva", "Joan", "Cristina", "Maria"]
-
     mensaje = f"Vale, voy a hacer {numero} grupos de comunidad"
     await update.callback_query.message.reply_text(mensaje)
 
-    grupos_creados = crear_grupos(int(numero), lista)
-                
-    for i, grupo in enumerate(grupos_creados):
-        message += f"Grupo {i+1}: {', '.join(grupo)}\n"
+    diccionario = {"Jose y Laura": 2, "Andrés y Salut": 2, "Javi y Salut": 2, "Luján y Sergio": 2, 
+               "Enan y Pilar": 2, "David y Sandra": 2, "Marcos y Maria": 2, "Ana María y Salva": 2, 
+               "Joan": 1, "Cristina": 1, "Maria": 1}
+    grupos = crear_grupos(int(numero), diccionario)
+
+    for i, grupo in enumerate(grupos):
+        message += f"Grupo {i+1}: {grupo} \n"
     await update.callback_query.message.reply_text(message)
-    # await update.callback_query.message.reply_text(numero)
+
+
+
 
 async def say_by(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Adiós")
@@ -82,16 +86,18 @@ async def obtener_grupos(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
             mensaje = ""
             message = ""
-            lista = ["Jose y Laura", "Andrés y Salut", "Javi y Salut", "Luján y Sergio"," Enan y Pilar", "David y Sandra", "Marcos y Maria", "Ana María y Salva", "Joan", "Cristina", "Maria"]
-            
+            diccionario = {"Jose y Laura": 2, "Andrés y Salut": 2, "Javi y Salut": 2, "Luján y Sergio": 2, 
+               "Enan y Pilar": 2, "David y Sandra": 2, "Marcos y Maria": 2, "Ana María y Salva": 2, 
+               "Joan": 1, "Cristina": 1, "Maria": 1}
+
             if numero >= 0:
                 mensaje = f"Vale, voy a hacer {numero} grupos de comunidad"
                 await update.message.reply_text(mensaje)
 
-                grupos_creados = crear_grupos(numero, lista)
+                grupos_creados = crear_grupos(numero, diccionario)
                 
                 for i, grupo in enumerate(grupos_creados):
-                    message += f"Grupo {i+1}: {', '.join(grupo)}\n"
+                    message += f"Grupo {i+1}: {grupo} \n"
                 await update.message.reply_text(message)
         except ValueError:
             await update.message.reply_text("Por favor, ingresa un número válido.")
