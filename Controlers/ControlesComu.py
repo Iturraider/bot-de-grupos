@@ -105,6 +105,15 @@ class ListaComunidad:
         await update.message.reply_text("¿Cuantos grupos te gustaría Hacer?", reply_markup=keyboard)
         return ConversationHandler.END
 
+    @staticmethod
+    async def respo(update: Update, context: ContextTypes.DEFAULT_TYPE):
+        await update.message.reply_voice("RoboCorte.mp3")
+        return
+    @staticmethod
+    async def miracolo(update: Update, context: ContextTypes.DEFAULT_TYPE):
+        await update.message.reply_sticker("Miracolo.webp")
+        return
+
 grupos_conversation_handler = ConversationHandler(
         entry_points=[ CommandHandler("crear", ListaComunidad.numero_grupos)],
         states={
