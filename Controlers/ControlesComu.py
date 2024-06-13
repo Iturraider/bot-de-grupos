@@ -1,15 +1,21 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton, ReplyKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes, MessageHandler, ConversationHandler, filters, CallbackContext, CallbackQueryHandler
-from Controlers.Funciones import crear_grupos
+from Controlers.Funciones import *
 import math
+
+
+def decir_bobadas():
+    mensaje = "valla bobada"
+    return mensaje
+
 
 OBTENER_GRUPOS, PRUEBA_OTRA_VEZ, VER_BROS = range(3)
 
 keyboard = InlineKeyboardMarkup([
 # Suggested code may be subject to a license. Learn more: ~LicenseLog:2565311830.
-        [InlineKeyboardButton(text="Consultar Lista de Hermanos", callback_data="see_bros"),InlineKeyboardButton(text="¿Quiés es el responsable?", callback_data="respo")],
+        [InlineKeyboardButton(text="Consultar Lista de Hermanos", callback_data= "ver_hermanos"),InlineKeyboardButton(text="¿Quién es el responsable?", callback_data="respo")],
         [InlineKeyboardButton(text="Crear grupos de comunidad", callback_data="hacer_grupos"), InlineKeyboardButton(text="Miracolo", callback_data="miracolo")],
-        [InlineKeyboardButton(text="Salir", callback_data="salir")]
+        [InlineKeyboardButton(text="Bobada", callback_data="bobada"), InlineKeyboardButton(text="Salir", callback_data="salir")]
         ])
 
 keyboard2 = InlineKeyboardMarkup([
@@ -35,7 +41,7 @@ class ListaComunidad:
         lista_keys = list(diccionario.keys())  # Obtener una lista de las claves
         mensaje = "\n".join(lista_keys)  # Unir las claves en un solo string con saltos de línea
         await update.message.reply_text("Esta es la Lista de Hermanos:")
-        await update.message.reply_text(mensaje) 
+        await update.message.reply_text(mensaje, reply_markup=keyboard3) 
         return mensaje
 
 
@@ -72,13 +78,14 @@ class ListaComunidad:
         if update.callback_query.data == "hacer_grupos":
             await update.callback_query.edit_message_text("¿Cuantos grupos te gustaría Hacer?", reply_markup=keyboard2)
             return
-        elif update.callback_query.data == "see_bros":
+        elif update.callback_query.data == "ver_hermanos":
             lista_keys = list(diccionario.keys())  # Obtener una lista de las claves
             mensaje = "\n".join(lista_keys)  # Unir las claves en un solo string con saltos de línea
-            await update.callback_query.message.reply_text("Esta es la Lista de Hermanos:")
-            await update.callback_query.message.reply_text(mensaje)
+            await update.callback_query.message.reply_text("Esta es la Lista de Hermanos: \n \n" +  mensaje, reply_markup=keyboard3)
+            # await update.callback_query.message.reply_text(mensaje, reply_markup=keyboard3)
             return
         elif update.callback_query.data == "atras":
+            # await update.callback_query.answer("ListaComunidad.say_hello")
             await update.callback_query.edit_message_text("¿Que te gustaría hacer?", reply_markup=keyboard)
             return
         elif update.callback_query.data == "respo":
@@ -94,18 +101,21 @@ class ListaComunidad:
         elif update.callback_query.data == "delete":
             await update.callback_query.message.delete()
             return
+        elif update.callback_query.data == "bobada":
+            await update.callback_query.message.reply_text(decir_bobadas(), reply_markup=keyboard3)
+            return
         else:
             numero = update.callback_query.data
             message = ""
             mensaje = f"Vale, voy a hacer {numero} grupos de comunidad"
-            await update.callback_query.message.reply_text(mensaje)
+            # await update.callback_query.message.reply_text(mensaje)
 
             grupos = crear_grupos(int(numero), diccionario)
 
             for i, grupo in enumerate(grupos):
                 message += f"Grupo {i+1}: "
                 message += ", ".join(grupo) + "\n"
-            await update.callback_query.message.reply_text(message)
+            await update.callback_query.message.reply_text(mensaje + "\n\n" + message, reply_markup= keyboard3)
             return 
         
     @staticmethod

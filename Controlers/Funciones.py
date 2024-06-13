@@ -27,6 +27,8 @@ def crear_grupos(numero_grupos, diccionario_nombres):
         indice_grupo = sumas_grupos.index(min(sumas_grupos))
         grupos[indice_grupo].append(nombre)
         sumas_grupos[indice_grupo] += valor
+        
 
     return grupos
+
 
