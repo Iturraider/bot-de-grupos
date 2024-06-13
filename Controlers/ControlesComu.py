@@ -14,7 +14,7 @@ OBTENER_GRUPOS, PRUEBA_OTRA_VEZ, VER_BROS = range(3)
 keyboard = InlineKeyboardMarkup([
 # Suggested code may be subject to a license. Learn more: ~LicenseLog:2565311830.
         [InlineKeyboardButton(text="Consultar Lista de Hermanos", callback_data= "ver_hermanos"),InlineKeyboardButton(text="¿Quién es el responsable?", callback_data="respo")],
-        [InlineKeyboardButton(text="Crear grupos de comunidad", callback_data="hacer_grupos"), InlineKeyboardButton(text="Miracolo", callback_data="miracolo")],
+        [InlineKeyboardButton(text="Crear grupos de comunidad", callback_data="hacer_grupos"), InlineKeyboardButton(text="Miracolo" , callback_data="miracolo")],
         [InlineKeyboardButton(text="Bobada", callback_data="bobada"), InlineKeyboardButton(text="Salir", callback_data="salir")]
         ])
 
@@ -64,12 +64,13 @@ class ListaComunidad:
                 for i, grupo in enumerate(grupos_creados):
                     message += f"Grupo {i+1}: "
                     message += ", ".join(grupo) + "\n"
-                await update.message.reply_text(message)
+                
+                return message
         except ValueError:
             await update.message.reply_text("Por favor, ingresa un número válido.")
-            return ConversationHandler.PRUEBA_OTRA_VEZ
+            return 
         
-        return ConversationHandler.END
+        return 
 
     @staticmethod
     async def boton_callback(update: Update, context: CallbackContext):
@@ -95,8 +96,8 @@ class ListaComunidad:
             await update.callback_query.message.reply_sticker(sticker=open("Miracolo.webp", "rb"), reply_markup=keyboard3)
             return
         elif update.callback_query.data == "salir":
-            await update.callback_query.message.reply_text("Vale! Hasta luego")
-            await update.callback_query.message.delete()
+# Suggested code may be subject to a license. Learn more: ~LicenseLog:3769876663.
+            await update.callback_query.edit_message_text("Vale! Hasta luego, si querés volver a empezar, escribe /start")
             return
         elif update.callback_query.data == "delete":
             await update.callback_query.message.delete()
